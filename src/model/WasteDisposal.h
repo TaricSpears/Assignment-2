@@ -1,5 +1,5 @@
-#ifndef __CAR_WASHING_PLANT__
-#define __CAR_WASHING_PLANT__
+#ifndef __WASTE_DISPOSAL_PLANT__
+#define __WASTE_DISPOSAL_PLANT__
 
 #include <Arduino.h>
 
@@ -51,6 +51,8 @@ class WasteDisposal {
     bool isCheckingIn();
     bool isWashing();
     bool isCheckingOut();
+    bool isEmergency();
+    
 
     double getCurrentCarDistance();
     bool detectedCarPresence();
@@ -82,7 +84,8 @@ class WasteDisposal {
         CHECKING_OUT,
         CHECK_OUT_COMPLETED,
         MAINTENANCE,
-        READY_TO_RESUME
+        READY_TO_RESUME,
+        EMERGENCY
     } state;
 
     Led* ledOn;

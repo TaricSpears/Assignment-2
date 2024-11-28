@@ -15,16 +15,20 @@ DoorTask::DoorTask(WasteDisposal* wasteDisposal, UserConsole* userConsole)
 }
 
 void DoorTask::tick() {
+    if (wasteDisposal->isEmergency()) {
+        if (state == OPEN) {
+            wasteDisposal->closeDoor();
+            setState(EMERGENCY);
+        }
+    }
     switch (state) {
         case AVAIABLE:
             // if bottone premuto
             break;
-
         case OPENING:
             wasteDisposal->openDoor();
             setState(OPEN);
             break;
-
         case OPEN:
             userConsole->displayMessage("PRESS CLOSE WHEN DONE");
             if (elapsedTimeInState() > T1 /* oppure bottone premuto*/) {
@@ -38,6 +42,11 @@ void DoorTask::tick() {
         case BLOCKED:
             userConsole->displayMessage("WASTE RECEIVED");
             if (elapsedTimeInState() > T2) {
+                setState(AVAIABLE);
+            }
+            break;
+        case EMERGENCY:
+            if (!wasteDisposal->isEmergency()) {
                 setState(AVAIABLE);
             }
             break;

@@ -6,16 +6,17 @@
 #include "kernel/Task.h"
 #include "model/WasteDisposal.h"
 
-class DoorTask : public Task {
+class TempTask : public Task {
    public:
-    DoorTask(WasteDisposal* wasteDisposal, UserConsole* userConsole);
+    TempTask(WasteDisposal* wasteDisposal, UserConsole* userConsole);
     void tick();
 
    private:
-    enum State { AVAIABLE, OPENING, OPEN, CLOSING, BLOCKED, EMERGENCY } state;
+    enum State { OK, EMERGENCY } state;
     void setState(State state);
     long elapsedTimeInState();
     long stateTimestamp;
+    long tempTime;
 
     WasteDisposal* wasteDisposal;
     UserConsole* userConsole;
