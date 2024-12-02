@@ -9,87 +9,93 @@
 #include "kernel/MsgService.h"
 
 UserConsole::UserConsole() {
-    pLcd = new LiquidCrystal_I2C(0x27, 20, 4);
-    pButton = new ButtonImpl(START_BT_PIN);
+    lcd = new LiquidCrystal_I2C(0x27, 20, 4);
+    openButton = new ButtonImpl(OPEN_BTN_PIN);
+    closeButton = new ButtonImpl(CLOSE_BTN_PIN);
 }
 
 void UserConsole::init() {
-    pLcd->init();
-    pLcd->backlight();
-    pLcd->noDisplay();
+    lcd->init();
+    lcd->backlight();
+    lcd->noDisplay();
 }
 
 void UserConsole::sync() {
-    pButton->sync();
+    openButton->sync();
+    closeButton->sync();
 }
 
 void UserConsole::turnOnDisplay() {
-    pLcd->display();
-    pLcd->clear();
+    lcd->display();
+    lcd->clear();
 }
 
 void UserConsole::turnOffDisplay() {
-    pLcd->noDisplay();
+    lcd->noDisplay();
 }
 
-bool UserConsole::started() {
-    return pButton->isPressed();
+bool UserConsole::isCloseButtonPressed() {
+    return closeButton->isPressed();
+}
+
+bool UserConsole::isOpenButtonPressed() {
+    return openButton->isClicked();
 }
 
 void UserConsole::displayWelcome() {
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print("Welcome");
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print("Welcome");
 }
 
 void UserConsole::displayChekingIn() {
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print("Proceed to the Washing Area");
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print("Proceed to the Washing Area");
 }
 
 void UserConsole::displayWaitToStart() {
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print("Ready To Wash");
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print("Ready To Wash");
 }
 
 void UserConsole::displayWashing(int perc) {
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print("Washing");
-    pLcd->setCursor(0, 1);
-    pLcd->setCursor(0, 1);
-    pLcd->print(String(perc));
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print("Washing");
+    lcd->setCursor(0, 1);
+    lcd->setCursor(0, 1);
+    lcd->print(String(perc));
     for (int i = 0; i < perc / 10; i++) {
-        pLcd->setCursor(5 + i, 1);
-        pLcd->print((char)0xFF);
+        lcd->setCursor(5 + i, 1);
+        lcd->print((char)0xFF);
     }
 }
 
 void UserConsole::displayWashingSuspended() {
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print("Washing Suspended");
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print("Washing Suspended");
 }
 
 void UserConsole::displayChekingOut() {
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print("Washing complete, you can leave the area");
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print("Washing complete, you can leave the area");
 }
 
 void UserConsole::prepareToSleep() {
-    pLcd->noDisplay();
+    lcd->noDisplay();
 }
 
 void UserConsole::resumeFromSleeping() {
-    pLcd->display();
+    lcd->display();
 }
 void UserConsole::displayMessage(const char* message) {
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print(message);
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print(message);
 }
 
 void UserConsole::test() {
@@ -97,16 +103,16 @@ void UserConsole::test() {
     delay(1000);
 
     Logger.log("Display test...");
-    pLcd->display();
-    pLcd->clear();
-    pLcd->setCursor(0, 0);
-    pLcd->print("Testing");
+    lcd->display();
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print("Testing");
 
     Logger.log("Button test...");
     long t0 = millis();
     while (millis() - t0 < 5000) {
         sync();
-        if (pButton->isPressed()) {
+        if (openButton->isPressed()) {
             Logger.log("pressed");
         }
     }

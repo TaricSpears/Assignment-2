@@ -22,7 +22,7 @@ void WasteDisposal::init() {
     pir->calibrate();
 
     nWashes = 0;
-    state = IDLE;
+    state = NORMAL;
 }
 
 void WasteDisposal::openDoor() {
@@ -36,4 +36,35 @@ void WasteDisposal::closeDoor() {
 
 bool WasteDisposal::isEmergency() {
     return state == EMERGENCY;
+}
+
+void WasteDisposal::setEmergency() {
+    state = EMERGENCY;
+}
+
+bool WasteDisposal::isFull() {
+    return state == FULL;
+}
+void WasteDisposal::setFull() {
+    state = FULL;
+}
+
+bool WasteDisposal::isNormal() {
+    return state == NORMAL;
+}
+
+void WasteDisposal::setNormal() {
+    state = NORMAL;
+}
+
+double WasteDisposal::getCurrentLevel() {
+    return sonar->getDistance();
+}
+
+double WasteDisposal::getCurrentTemperature() {
+    return tempSensor->getTemperature();
+}
+
+bool WasteDisposal::isUserDetected() {
+    return pir->isDetected();
 }

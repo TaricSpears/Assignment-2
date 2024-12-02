@@ -4,7 +4,6 @@
 
 #include "config.h"
 #include "kernel/Logger.h"
-// #include "UserConsole.h"
 
 #define T1 10000
 #define T2 3000
@@ -23,15 +22,17 @@ void DoorTask::tick() {
     }
     switch (state) {
         case AVAIABLE:
-            // if bottone premuto
+            if (userConsole->isOpenButtonPressed()) {
+                setState(OPENING);
+            }
             break;
         case OPENING:
             wasteDisposal->openDoor();
             setState(OPEN);
+            userConsole->displayMessage("PRESS CLOSE WHEN DONE");
             break;
         case OPEN:
-            userConsole->displayMessage("PRESS CLOSE WHEN DONE");
-            if (elapsedTimeInState() > T1 /* oppure bottone premuto*/) {
+            if (elapsedTimeInState() > T1 || userConsole->isCloseButtonPressed()) {
                 setState(CLOSING);
             }
             break;

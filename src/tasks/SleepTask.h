@@ -1,18 +1,19 @@
-#ifndef __LEVEL_TASK__
-#define __LEVEL_TASK__
+#ifndef __SLEEP_TASK__
+#define __SLEEP_TASK__
 
 #include <UserConsole.h>
 
 #include "kernel/Task.h"
 #include "model/WasteDisposal.h"
 
-class LevelTask : public Task {
+class SleepTask : public Task {
    public:
-    LevelTask(WasteDisposal *wasteDisposal, UserConsole *userConsole);
+    SleepTask(WasteDisposal *wasteDisposal, UserConsole *userConsole);
     void tick();
+    void initialize();
 
    private:
-    enum State { OK, FULL } state;
+    enum State { SLEEP, NEAR, FAR } state;
     void setState(State state);
     long elapsedTimeInState();
     long stateTimestamp;

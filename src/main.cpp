@@ -1,79 +1,51 @@
-/*
- * SMART CAR WASHING - Assignment #02 - ESIOT a.y. 2023-2024
- * 
- * Solution sketch by AR
- * 
- */
 #include <Arduino.h>
+
+#include "WasteDisposal.h"
 #include "config.h"
-#include "kernel/Scheduler.h"
 #include "kernel/Logger.h"
 #include "kernel/MsgService.h"
-
-#include "model/UserConsole.h"
+#include "kernel/Scheduler.h"
 #include "model/CarWashingPlant.h"
-
-#include "tasks/WashingWorkflowManTask.h"
-#include "tasks/CheckInTask.h"
-#include "tasks/CheckOutTask.h"
-#include "tasks/BlinkTask.h"
-#include "tasks/WashingTask.h"
-#include "tasks/TelemetryTask.h"
-
+#include "model/UserConsole.h"
+#include "tasks/DoorTask.h"
+#include "tasks/LevelTask.h"
+#include "tasks/SleepTask.h"
+#include "tasks/TempTask.h"
 
 Scheduler sched;
 
-CarWashingPlant* pCarWashingPlant;
-UserConsole* pUserConsole;
+WasteDisposal* wasteDisposal;
+UserConsole* userConsole;
 
 void setup() {
-  MsgService.init();
-  sched.init(100);
+    MsgService.init();
+    sched.init(100);
 
-  Logger.log(".:: Smart Car Washing ::.");
-  
-  pCarWashingPlant = new CarWashingPlant();
-  pCarWashingPlant->init();
+    Logger.log("Waste Disposal");
 
-  pUserConsole = new UserConsole();
-  pUserConsole->init();
+    wasteDisposal = new WasteDisposal();
+    wasteDisposal->init();
 
-  Task* pCheckInInBlinkTask = new BlinkTask(LED2_PIN);
-  pCheckInInBlinkTask->init(100);
-  pCheckInInBlinkTask->setActive(false);
+    userConsole = new UserConsole();
+    userConsole->init();
 
-  Task* pWashingWorkflowManTask = new WashingWorkflowManTask(pCarWashingPlant, pUserConsole);
-  pWashingWorkflowManTask->init(100);
+    Task* doorTask = new DoorTask(wasteDisposal, userConsole);
+    doorTask->init(100);
 
-  Task* pCheckInTask = new CheckInTask(pCarWashingPlant, pCheckInInBlinkTask);
-  pCheckInTask->init(200);
+    Task* levelTask = new LevelTask(wasteDisposal, userConsole);
+    levelTask->init(100);
 
-  Task* pCheckOutTask = new CheckOutTask(pCarWashingPlant);
-  pCheckOutTask->init(200);
+    SleepTask* sleepTask = new SleepTask(wasteDisposal, userConsole);
+    sleepTask->init(100);
+    sleepTask->initialize();
 
-  Task* pWashingBlinkTask = new BlinkTask(LED2_PIN);
-  pWashingBlinkTask->init(100);
-  pWashingBlinkTask->setActive(false);
+    Task* tempTask = new TempTask(wasteDisposal, userConsole);
+    tempTask->init(100);
 
-  Task* pWashingTask = new WashingTask(pCarWashingPlant, pUserConsole, pWashingBlinkTask);
-  pWashingTask->init(100);
-
-  Task* pTelemetryTask = new TelemetryTask(pCarWashingPlant, pUserConsole);
-  pTelemetryTask->init(100);
-
-  sched.addTask(pWashingWorkflowManTask);
-  sched.addTask(pCheckInTask);  
-  sched.addTask(pCheckInInBlinkTask);  
-  sched.addTask(pCheckOutTask);  
-  sched.addTask(pWashingTask); 
-  sched.addTask(pWashingBlinkTask);  
-  sched.addTask(pTelemetryTask);
-  
-  // 
-
-  // pCarWashingPlant->test();
-  // pUserConsole->test();
- 
+    sched.addTask(doorTask);
+    sched.addTask(levelTask);
+    sched.addTask(sleepTask);
+    sched.addTask(tempTask);
 }
 
 void loop() {

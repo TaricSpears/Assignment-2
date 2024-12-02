@@ -1,5 +1,5 @@
-#ifndef __CHECKIN_TASK__
-#define __CHECKIN_TASK__
+#ifndef __TEMP_TASK__
+#define __TEMP_TASK__
 
 #include <UserConsole.h>
 
@@ -12,7 +12,7 @@ class TempTask : public Task {
     void tick();
 
    private:
-    enum State { OK, EMERGENCY } state;
+    enum State { OK, HOT, EMERGENCY } state;
     void setState(State state);
     long elapsedTimeInState();
     long stateTimestamp;

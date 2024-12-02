@@ -17,53 +17,22 @@ class WasteDisposal {
 
     void openDoor();
     void closeDoor();
-    void readyToAccept();
 
-    void idle();
     void prepareToSleep();
     void resumeFromSleeping();
 
-    void readyForCheckIn();
-    bool isReadyForCheckIn();
-    bool isCheckInCompleted();
-    void checkInStarted();
-    void checkInCompleted();
-
-    void readyForWashing();
-    bool isReadyForWashing();
-    void washingStarted();
-    void resumeWashing();
-    void washingCompleted();
-    bool isWashingCompleted();
-
-    void readyForCheckOut();
-    bool isReadyForCheckOut();
-    void checkOutStarted();
-    void checkOutCompleted();
-    bool isCheckOutCompleted();
-
-    void setInMaintenance();
-    bool isInMaintenance();
-    void maintenanceDone();
-    bool isReadyToResume();
-
-    bool isIdle();
-    bool isCheckingIn();
-    bool isWashing();
-    bool isCheckingOut();
     bool isEmergency();
-    
+    void setEmergency();
 
-    double getCurrentCarDistance();
-    bool detectedCarPresence();
+    bool isFull();
+    void setFull();
+
+    bool isNormal();
+    void setNormal();
+
     double getCurrentTemperature();
-    int getNumWashes();
-
-    void sampleCarPresence();
-    void sampleCarDistance();
-    void sampleTemperature();
-
-    void test();
+    double getCurrentLevel();
+    bool isUserDetected();
 
    private:
     double currentTemperature;
@@ -72,21 +41,7 @@ class WasteDisposal {
 
     int nWashes;
 
-    enum {
-        IDLE,
-        READY_FOR_CHECKIN,
-        CHECKING_IN,
-        CHECK_IN_COMPLETED,
-        READY_FOR_WASHING,
-        WASHING,
-        WASHING_COMPLETED,
-        READY_FOR_CHECKOUT,
-        CHECKING_OUT,
-        CHECK_OUT_COMPLETED,
-        MAINTENANCE,
-        READY_TO_RESUME,
-        EMERGENCY
-    } state;
+    enum { NORMAL, FULL, EMERGENCY } state;
 
     Led* ledOn;
     Led* ledAlarm;

@@ -16,14 +16,22 @@ TempTask::TempTask(WasteDisposal* wasteDisposal, UserConsole* userConsole)
 void TempTask::tick() {
     switch (state) {
         case OK:
-            if (wasteDisposal->getCurrentTemperature() < MAXTEMP) {
-                tempTime = 0;
+            if (wasteDisposal->getCurrentTemperature() > MAXTEMP) {
+                setState(HOT);
             }
-            if (tempTime > MAXTEMPTIME) {
+            break;
+        case HOT:
+            if (elapsedTimeInState() > MAXTEMPTIME) {
                 setState(EMERGENCY);
+                wasteDisposal->setEmergency();
+            } else if (wasteDisposal->getCurrentTemperature() <= MAXTEMP) {
+                setState(OK);
             }
             break;
         case EMERGENCY:
+            if (!wasteDisposal->isEmergency()) {
+                setState(OK);
+            }
             break;
     }
 }

@@ -9,6 +9,7 @@
 #define SONAR_ECHO_PIN 8
 
 #define DOOR_MOTOR_PIN 9
-// #define START_BT_PIN 3
+#define OPEN_BTN_PIN 10
+#define CLOSE_BTN_PIN 11
 
 #endif

@@ -4,9 +4,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
 
-#include "config.h"
 #include "devices/Button.h"
-// #include "Bridge.h"
 
 class UserConsole {
    public:
@@ -17,8 +15,6 @@ class UserConsole {
 
     void turnOffDisplay();
     void turnOnDisplay();
-
-    bool started();
 
     void displayMessage(const char* message);
     void displayWelcome();
@@ -33,9 +29,13 @@ class UserConsole {
 
     void test();
 
+    bool isCloseButtonPressed();
+    bool isOpenButtonPressed();
+
    private:
-    Button* pButton;
-    LiquidCrystal_I2C* pLcd;
+    Button* openButton;
+    Button* closeButton;
+    LiquidCrystal_I2C* lcd;
 };
 
 #endif

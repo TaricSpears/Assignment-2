@@ -1,5 +1,5 @@
-#ifndef __CHECKIN_TASK__
-#define __CHECKIN_TASK__
+#ifndef __DOOR_TASK__
+#define __DOOR_TASK__
 
 #include <UserConsole.h>
 
