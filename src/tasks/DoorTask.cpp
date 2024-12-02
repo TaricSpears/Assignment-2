@@ -29,7 +29,7 @@ void DoorTask::tick() {
         case OPENING:
             wasteDisposal->openDoor();
             setState(OPEN);
-            userConsole->displayMessage("PRESS CLOSE WHEN DONE");
+            userConsole->displayMessage("PRESS CLOSE", "WHEN DONE");
             break;
         case OPEN:
             if (elapsedTimeInState() > T1 || userConsole->isCloseButtonPressed()) {
@@ -57,6 +57,9 @@ void DoorTask::tick() {
 void DoorTask::setState(State s) {
     state = s;
     stateTimestamp = millis();
+    if (s == AVAIABLE) {
+        userConsole->displayMessage("PRESS OPEN TO", "ENTER WASTE");
+    }
 }
 
 long DoorTask::elapsedTimeInState() {

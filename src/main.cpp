@@ -5,7 +5,6 @@
 #include "kernel/Logger.h"
 #include "kernel/MsgService.h"
 #include "kernel/Scheduler.h"
-#include "model/CarWashingPlant.h"
 #include "model/UserConsole.h"
 #include "tasks/DoorTask.h"
 #include "tasks/LevelTask.h"
@@ -19,7 +18,7 @@ UserConsole* userConsole;
 
 void setup() {
     MsgService.init();
-    sched.init(100);
+    sched.init(50);
 
     Logger.log("Waste Disposal");
 
@@ -28,19 +27,20 @@ void setup() {
 
     userConsole = new UserConsole();
     userConsole->init();
+    userConsole->turnOnDisplay();
 
     Task* doorTask = new DoorTask(wasteDisposal, userConsole);
-    doorTask->init(100);
+    doorTask->init(50);
 
     Task* levelTask = new LevelTask(wasteDisposal, userConsole);
-    levelTask->init(100);
+    levelTask->init(50);
 
     SleepTask* sleepTask = new SleepTask(wasteDisposal, userConsole);
-    sleepTask->init(100);
+    sleepTask->init(50);
     sleepTask->initialize();
 
     Task* tempTask = new TempTask(wasteDisposal, userConsole);
-    tempTask->init(100);
+    tempTask->init(50);
 
     sched.addTask(doorTask);
     sched.addTask(levelTask);

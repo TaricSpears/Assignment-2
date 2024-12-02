@@ -15,10 +15,6 @@ bool Pir::isDetected(){
   return detected;
 }
 
-void Pir::calibrate(){
-	delay(10000);
-}
-
 void Pir::updateSyncTime(long time){
 	lastTimeSync = time;
 }

@@ -17,6 +17,7 @@ class UserConsole {
     void turnOnDisplay();
 
     void displayMessage(const char* message);
+    void displayMessage(const char* line1, const char* line2);
     void displayWelcome();
     void displayChekingIn();
     void displayWaitToStart();

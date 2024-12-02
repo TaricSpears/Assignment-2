@@ -35,11 +35,13 @@ void UserConsole::turnOffDisplay() {
 }
 
 bool UserConsole::isCloseButtonPressed() {
+    closeButton->sync();
     return closeButton->isPressed();
 }
 
 bool UserConsole::isOpenButtonPressed() {
-    return openButton->isClicked();
+    openButton->sync();
+    return openButton->isPressed();
 }
 
 void UserConsole::displayWelcome() {
@@ -96,6 +98,14 @@ void UserConsole::displayMessage(const char* message) {
     lcd->clear();
     lcd->setCursor(0, 0);
     lcd->print(message);
+}
+
+void UserConsole::displayMessage(const char* line1, const char* line2) {
+    lcd->clear();
+    lcd->setCursor(0, 0);
+    lcd->print(line1);
+    lcd->setCursor(0, 1);
+    lcd->print(line2);
 }
 
 void UserConsole::test() {

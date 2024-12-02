@@ -6,7 +6,7 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-#define Tsleep 7000
+#define Tsleep 12000
 SleepTask::SleepTask(WasteDisposal *wasteDisposal, UserConsole *userConsole)
     : wasteDisposal{wasteDisposal}, userConsole{userConsole} {
     setState(SLEEP);
@@ -30,7 +30,7 @@ void SleepTask::tick() {
             sleep_mode();
             wasteDisposal->resumeFromSleeping();
             userConsole->resumeFromSleeping();
-            setState(WAITING_FOR_CARS);
+            setState(NEAR);
             break;
         case NEAR:
             if (!wasteDisposal->isUserDetected()) {
@@ -45,4 +45,13 @@ void SleepTask::tick() {
             }
             break;
     }
+}
+
+void SleepTask::setState(State s) {
+    state = s;
+    stateTimestamp = millis();
+}
+
+long SleepTask::elapsedTimeInState() {
+    return millis() - stateTimestamp;
 }

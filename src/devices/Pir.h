@@ -8,7 +8,6 @@ class Pir: public PresenceSensor {
 public: 
   Pir(int pin);
   bool isDetected();
-  void calibrate();
 
   void sync();
   long getLastSyncTime();

@@ -5,7 +5,7 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-#define MAXDISTANCE 30
+#define MAXDISTANCE 0.30
 
 LevelTask::LevelTask(WasteDisposal *wasteDisposal, UserConsole *userConsole)
     : wasteDisposal{wasteDisposal}, userConsole{userConsole} {
