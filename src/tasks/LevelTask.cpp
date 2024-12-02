@@ -22,9 +22,10 @@ void LevelTask::tick()
     {
       // disabilita apertira sportello
       wasteDisposal->closeDoor();
+      userConsole->displayMessage("CONTAINER FULL");
       wasteDispodsal->isEmergency();
       // mostra "CONTAINER FULL" sul display
-      userConsole->displayMessage("CONTAINER FULL");
+      
       setState(FULL);
     }
 
