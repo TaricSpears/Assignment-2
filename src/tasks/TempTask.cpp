@@ -24,6 +24,7 @@ void TempTask::tick() {
             if (elapsedTimeInState() > MAXTEMPTIME) {
                 setState(EMERGENCY);
                 wasteDisposal->setEmergency();
+                userConsole->displayMessage("PROBLEM DETECTED");
             } else if (wasteDisposal->getCurrentTemperature() <= MAXTEMP) {
                 setState(OK);
             }

@@ -18,7 +18,7 @@ void WasteDisposal::init() {
     doorMotor = new ServoMotorImpl(DOOR_MOTOR_PIN);
 
     nWashes = 0;
-    setNormal();
+    setAcceptingWaste();
 }
 
 void WasteDisposal::openDoor() {
@@ -36,6 +36,8 @@ bool WasteDisposal::isEmergency() {
 
 void WasteDisposal::setEmergency() {
     state = EMERGENCY;
+    ledOn->switchOff();
+    ledAlarm->switchOn();
 }
 
 bool WasteDisposal::isFull() {
@@ -44,15 +46,21 @@ bool WasteDisposal::isFull() {
 void WasteDisposal::setFull() {
     state = FULL;
     ledOn->switchOff();
+    ledAlarm->switchOn();
 }
 
-bool WasteDisposal::isNormal() {
-    return state == NORMAL;
+bool WasteDisposal::isAcceptingWaste() {
+    return state == ACCEPTING_WASTE;
 }
 
-void WasteDisposal::setNormal() {
-    state = NORMAL;
+void WasteDisposal::setAcceptingWaste() {
+    state = ACCEPTING_WASTE;
     ledOn->switchOn();
+    ledAlarm->switchOff();
+}
+
+bool WasteDisposal::canOpenDoor() {
+    return isAcceptingWaste();
 }
 
 double WasteDisposal::getCurrentLevel() {

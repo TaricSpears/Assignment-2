@@ -27,8 +27,10 @@ class WasteDisposal {
     bool isFull();
     void setFull();
 
-    bool isNormal();
-    void setNormal();
+    bool isAcceptingWaste();
+    void setAcceptingWaste();
+
+    bool canOpenDoor();
 
     double getCurrentTemperature();
     double getCurrentLevel();
@@ -41,7 +43,7 @@ class WasteDisposal {
 
     int nWashes;
 
-    enum { NORMAL, FULL, EMERGENCY } state;
+    enum { ACCEPTING_WASTE, FULL, EMERGENCY } state;
 
     Led* ledOn;
     Led* ledAlarm;

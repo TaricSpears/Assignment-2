@@ -16,7 +16,6 @@ void LevelTask::tick() {
     switch (state) {
         case OK:
             if (wasteDisposal->getCurrentLevel() <= MAXDISTANCE) {
-                // disabilita apertira sportello
                 wasteDisposal->setFull();
                 wasteDisposal->closeDoor();
                 userConsole->displayMessage("CONTAINER FULL");
@@ -25,7 +24,7 @@ void LevelTask::tick() {
             break;
         case FULL:
             if (wasteDisposal->getCurrentLevel() > MAXDISTANCE) {
-                wasteDisposal->setNormal();
+                wasteDisposal->setAcceptingWaste();
                 setState(OK);
             }
             break;

@@ -12,10 +12,12 @@ class DoorTask : public Task {
     void tick();
 
    private:
-    enum State { AVAIABLE, OPENING, OPEN, CLOSING, BLOCKED, EMERGENCY } state;
+    enum State { AVAIABLE, OPENING, OPEN, CLOSING, JUST_CLOSED, BLOCKED } state;
     void setState(State state);
     long elapsedTimeInState();
+    void displayMessageOnce(const char* line1, const char* line2);
     long stateTimestamp;
+    bool justEntered;
 
     WasteDisposal* wasteDisposal;
     UserConsole* userConsole;

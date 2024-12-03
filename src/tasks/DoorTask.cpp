@@ -14,14 +14,15 @@ DoorTask::DoorTask(WasteDisposal* wasteDisposal, UserConsole* userConsole)
 }
 
 void DoorTask::tick() {
-    if (wasteDisposal->isEmergency()) {
+    if (!wasteDisposal->canOpenDoor()) {
         if (state == OPEN) {
             wasteDisposal->closeDoor();
-            setState(EMERGENCY);
         }
+        setState(BLOCKED);
     }
     switch (state) {
         case AVAIABLE:
+            displayMessageOnce("PRESS OPEN TO", "ENTER WASTE");
             if (userConsole->isOpenButtonPressed()) {
                 setState(OPENING);
             }
@@ -29,25 +30,25 @@ void DoorTask::tick() {
         case OPENING:
             wasteDisposal->openDoor();
             setState(OPEN);
-            userConsole->displayMessage("PRESS CLOSE", "WHEN DONE");
             break;
         case OPEN:
+            displayMessageOnce("PRESS CLOSE", "WHEN DONE");
             if (elapsedTimeInState() > T1 || userConsole->isCloseButtonPressed()) {
                 setState(CLOSING);
             }
             break;
         case CLOSING:
             wasteDisposal->closeDoor();
-            setState(BLOCKED);
+            setState(JUST_CLOSED);
             break;
-        case BLOCKED:
-            userConsole->displayMessage("WASTE RECEIVED");
+        case JUST_CLOSED:
+            displayMessageOnce("WASTE RECEIVED", "");
             if (elapsedTimeInState() > T2) {
                 setState(AVAIABLE);
             }
             break;
-        case EMERGENCY:
-            if (!wasteDisposal->isEmergency()) {
+        case BLOCKED:
+            if (wasteDisposal->canOpenDoor()) {
                 setState(AVAIABLE);
             }
             break;
@@ -57,8 +58,13 @@ void DoorTask::tick() {
 void DoorTask::setState(State s) {
     state = s;
     stateTimestamp = millis();
-    if (s == AVAIABLE) {
-        userConsole->displayMessage("PRESS OPEN TO", "ENTER WASTE");
+    justEntered = true;
+}
+
+void DoorTask::displayMessageOnce(const char* line1, const char* line2) {
+    if (justEntered) {
+        userConsole->displayMessage(line1, line2);
+        justEntered = false;
     }
 }
 
