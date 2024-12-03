@@ -77,6 +77,7 @@ bool WasteDisposal::isUserDetected() {
 }
 
 void WasteDisposal::prepareToSleep() {
+    ledOn->switchOn();
     Logger.log("Going to sleep");
 }
 

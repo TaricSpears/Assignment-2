@@ -6,7 +6,7 @@
 #include "config.h"
 #include "kernel/Logger.h"
 
-#define Tsleep 12000
+#define Tsleep 12000000
 SleepTask::SleepTask(WasteDisposal *wasteDisposal, UserConsole *userConsole)
     : wasteDisposal{wasteDisposal}, userConsole{userConsole} {
     setState(SLEEP);

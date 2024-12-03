@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "WasteDisposal.h"
+#include "model/WasteDisposal.h"
 #include "config.h"
 #include "kernel/Logger.h"
 #include "kernel/MsgService.h"
