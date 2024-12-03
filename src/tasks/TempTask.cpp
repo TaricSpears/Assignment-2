@@ -4,9 +4,12 @@
 
 #include "config.h"
 #include "kernel/Logger.h"
+#include "kernel/MsgService.h"
 
-#define MAXTEMP 30
+#define MAXTEMP 21
 #define MAXTEMPTIME 5000
+
+RestorePattern* restorePattern = new RestorePattern();
 
 TempTask::TempTask(WasteDisposal* wasteDisposal, UserConsole* userConsole)
     : wasteDisposal{wasteDisposal}, userConsole{userConsole} {
@@ -14,6 +17,7 @@ TempTask::TempTask(WasteDisposal* wasteDisposal, UserConsole* userConsole)
 }
 
 void TempTask::tick() {
+    Logger.temp(String(wasteDisposal->getCurrentTemperature()));
     switch (state) {
         case OK:
             if (wasteDisposal->getCurrentTemperature() > MAXTEMP) {
@@ -25,12 +29,15 @@ void TempTask::tick() {
                 setState(EMERGENCY);
                 wasteDisposal->setEmergency();
                 userConsole->displayMessage("PROBLEM DETECTED");
+                Logger.emergency("1");
             } else if (wasteDisposal->getCurrentTemperature() <= MAXTEMP) {
                 setState(OK);
             }
             break;
         case EMERGENCY:
-            if (!wasteDisposal->isEmergency()) {
+            if (MsgService.isMsgAvailable(*restorePattern)) {
+                Msg* msg = MsgService.receiveMsg(*restorePattern);
+                wasteDisposal->setAcceptingWaste();
                 setState(OK);
             }
             break;

@@ -17,6 +17,7 @@ class WasteDisposal {
 
     void openDoor();
     void closeDoor();
+    void bendDoor();
 
     void prepareToSleep();
     void resumeFromSleeping();

@@ -12,7 +12,7 @@ class LevelTask : public Task {
     void tick();
 
    private:
-    enum State { OK, FULL } state;
+    enum State { OK, FULL, EMPTYING } state;
     void setState(State state);
     long elapsedTimeInState();
     long stateTimestamp;
