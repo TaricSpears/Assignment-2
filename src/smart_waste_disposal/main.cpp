@@ -33,14 +33,14 @@ void setup() {
     doorTask->init(50);
 
     Task* levelTask = new LevelTask(wasteDisposal, userConsole);
-    levelTask->init(50);
+    levelTask->init(100);
 
     SleepTask* sleepTask = new SleepTask(wasteDisposal, userConsole);
-    sleepTask->init(50);
+    sleepTask->init(100);
     sleepTask->initialize();
 
     Task* tempTask = new TempTask(wasteDisposal, userConsole);
-    tempTask->init(50);
+    tempTask->init(100);
 
     sched.addTask(doorTask);
     sched.addTask(levelTask);

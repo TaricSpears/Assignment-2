@@ -6,7 +6,7 @@
 #include "kernel/Logger.h"
 #include "kernel/MsgService.h"
 
-#define MAXDISTANCE 0.20
+#define MAXDISTANCE 0.10
 #define T3 5000
 
 LevelTask::LevelTask(WasteDisposal *wasteDisposal, UserConsole *userConsole)
@@ -17,18 +17,20 @@ LevelTask::LevelTask(WasteDisposal *wasteDisposal, UserConsole *userConsole)
 CleanPattern *cleanPattern = new CleanPattern();
 
 void LevelTask::tick() {
+    double level = wasteDisposal->getCurrentLevel();
     switch (state) {
-        case OK:
-            Logger.bin(String((int)((1 - wasteDisposal->getCurrentLevel()) * 100.0 / (1 - MAXDISTANCE))));
-            if (wasteDisposal->getCurrentLevel() <= MAXDISTANCE) {
+        case OK: {
+            Logger.bin(String((int)((1 - level) * 100.0 / (1 - MAXDISTANCE))));
+            if (level <= MAXDISTANCE) {
                 wasteDisposal->setFull();
                 wasteDisposal->closeDoor();
                 userConsole->displayMessage("CONTAINER FULL");
                 setState(FULL);
             }
             break;
+        }
         case FULL:
-            if (MsgService.isMsgAvailable(*cleanPattern) && wasteDisposal->getCurrentLevel() > MAXDISTANCE) {
+            if (MsgService.isMsgAvailable(*cleanPattern) && level > MAXDISTANCE) {
                 Msg *msg = MsgService.receiveMsg(*cleanPattern);
                 setState(EMPTYING);
                 wasteDisposal->bendDoor();

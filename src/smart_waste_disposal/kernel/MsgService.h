@@ -2,6 +2,7 @@
 #define __MSGSERVICE__
 
 #include "Arduino.h"
+#include "Logger.h"
 
 class Msg {
     String content;

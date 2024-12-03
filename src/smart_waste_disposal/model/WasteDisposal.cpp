@@ -27,7 +27,7 @@ void WasteDisposal::openDoor() {
 }
 
 void WasteDisposal::bendDoor() {
-    doorMotor->setPosition(-90);
+    doorMotor->setPosition(180);
 }
 
 void WasteDisposal::closeDoor() {
